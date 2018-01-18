@@ -1,13 +1,15 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { passTest } from '../../actions'
+import { createNewDeck, dealCardTo } from '../../../../actions'
 
 const mapStateToProps = state => ({
-  testPassed: state.testPassed
+  deck: state.deck,
+  hands: state.hands
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  passTest
+  createNewDeck,
+  dealCardTo
 }, dispatch)
 
 export default WrappedComponent => connect(mapStateToProps, mapDispatchToProps)(WrappedComponent)
