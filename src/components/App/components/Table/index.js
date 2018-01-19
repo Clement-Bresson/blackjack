@@ -42,23 +42,27 @@ class Table extends React.Component {
     const { dealer, ...playerHands } = hands
     return (
       <Wrapper>
-        <Dealer>
-          <Hand
-            cards={dealer}
-            player='dealer'
-          />
-        </Dealer>
-        <Monitor />
-        <Player>
-          {Object.keys(playerHands).map(player => (
+        {!!dealer &&
+          <Dealer>
             <Hand
-              key={player}
-              cards={hands[player]}
-              player={player}
-              status={statuses[player]}
+              cards={dealer}
+              player='dealer'
             />
-          ))}
-        </Player>
+          </Dealer>
+        }
+        <Monitor />
+        {!!playerHands &&
+          <Player>
+            {Object.keys(playerHands).map(player => (
+              <Hand
+                key={player}
+                cards={hands[player]}
+                player={player}
+                status={statuses[player]}
+              />
+            ))}
+          </Player>
+        }
       </Wrapper>
     )
   }
