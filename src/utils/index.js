@@ -31,7 +31,7 @@ export const computePossibleScores = cards => {
   return possibleScores.includes(21) ? [21] : possibleScores
 }
 
-export const visibleCards = hand => hand.filter(card => card.faceDown === false).length
+export const visibleCards = hand => !!hand ? hand.filter(card => card.faceDown === false).length : 0
 
 export const getFinalScore = hand => {
   return Math.max(...computePossibleScores(hand).filter(score => score <= 21))

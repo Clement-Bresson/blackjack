@@ -11,9 +11,7 @@ import { createNewDeck, getFinalScore } from './../utils'
 
 const intialState = {
   deck: [],
-  hands: {
-    dealer: []
-  },
+  hands: {},
   statuses: {
     dealer: null
   }

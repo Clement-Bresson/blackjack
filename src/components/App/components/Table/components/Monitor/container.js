@@ -10,7 +10,7 @@ import { getAllScores } from '../../../../../../utils'
 
 const mapStateToProps = state => ({
   hands: state.hands,
-  scores: getAllScores(state.hands),
+  scores: Object.keys(state.hands).length > 0 ? getAllScores(state.hands) : {},
   statuses: state.statuses
 })
 
