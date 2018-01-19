@@ -1,18 +1,27 @@
 import React from 'react'
 import { PropTypes as T } from 'prop-types'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const slideIn = keyframes`
+  from { opacity: 0; bottom: -100px; }
+  to { opacity: 1; bottom: 0;  }
+`
 
 const Wrapper = styled.div`
-  background-color: #FFFFFF;
+  animation: ${slideIn} 0.3s linear forwards;
+  background-color: rgb(250,250,250);
   border-radius: 7%;
   color: ${props => ['diamond', 'heart'].includes(props.suit) ? 'red' : 'black'};
   
-  font-size: 20px;
+  font-size: 30px;
 
   width: 75px;
   height: 100px;
   position: relative;
   margin: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   & > div {
     position: absolute;
@@ -43,7 +52,6 @@ const Back = styled.div`
   opacity: 0.8;
   width: calc(100% - 10px);
   height: calc(100% - 10px);
-  margin: 5px;
   background: #400000;
   background: -moz-linear-gradient(top,  #400000 0%, #000000 100%);
   background: -webkit-linear-gradient(top,  #400000 0%,#000000 100%);
@@ -69,22 +77,30 @@ const Card = ({ faceDown, suit, value }) => {
     default:
       break
   }
+  let content
+  switch (true) {
+    case faceDown:
+      content = <Back />
+      break
+    case value === '1':
+      content = <Suit big/>
+      break
+    default:
+      content = [
+        <Top key='top'>
+          <span>{value}</span>
+          <Suit />
+        </Top>,
+        <Bottom key='back'>
+          <span>{value}</span>
+          <Suit />
+        </Bottom>
+      ]
+      break
+  }
   return (
     <Wrapper suit={suit}>
-      {faceDown ?
-        <Back />
-      :
-        [
-          <Top key='top'>
-            <span>{value}</span>
-            <Suit />
-          </Top>,
-          <Bottom key='back'>
-            <span>{value}</span>
-            <Suit />
-          </Bottom>
-        ]
-      }
+      {content}
     </Wrapper>
   )
 }

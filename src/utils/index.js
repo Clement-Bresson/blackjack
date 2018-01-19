@@ -30,3 +30,19 @@ export const computePossibleScores = cards => {
   })
   return possibleScores.includes(21) ? [21] : possibleScores
 }
+
+export const visibleCards = hand => hand.filter(card => card.faceDown === false).length
+
+export const getFinalScore = hand => {
+  return Math.max(...computePossibleScores(hand).filter(score => score <= 21))
+}
+
+export const getAllScores = hands => {
+  const scores = {}
+  const { dealer, ...playerHands } = hands
+  scores.dealer = getFinalScore(dealer)
+  Object.keys(playerHands).forEach(player => {
+    scores[player] = getFinalScore(playerHands[player])
+  })
+  return scores
+}

@@ -1,21 +1,37 @@
 import React from 'react'
 import Hand from './components/Hand'
+import Monitor from './components/Monitor'
 import withContainer from './container'
 import { PropTypes as T } from 'prop-types'
+import styled from 'styled-components'
+
+const Wrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const Players = styled.div`
+  margin: auto;
+  left: 0;
+  right: 0;
+  position: absolute;
+`
+
+const Dealer = Players.extend`
+  top: 5vh;
+`
+
+const Player = Players.extend`
+  bottom: 5vh;
+`
 
 class Table extends React.Component {
-
-  componentWillMount () {
-    const { createNewDeck, dealCardTo } = this.props
-    createNewDeck()
-    dealCardTo('player')
-    dealCardTo('player')
-    dealCardTo('dealer')
-    dealCardTo('dealer', true)
-  }
-
   render () {
-    const { hands } = this.props
+    const { hands, statuses } = this.props
 
     if (!hands) {
       return (
@@ -23,25 +39,35 @@ class Table extends React.Component {
       )
     }
 
+    const { dealer, ...playerHands } = hands
     return (
-      <div>
-        {Object.keys(hands).map(player => (
+      <Wrapper>
+        <Dealer>
           <Hand
-            key={player}
-            cards={hands[player]}
-            player={player}
+            cards={dealer}
+            player='dealer'
           />
-        ))}
-      </div>
+        </Dealer>
+        <Monitor />
+        <Player>
+          {Object.keys(playerHands).map(player => (
+            <Hand
+              key={player}
+              cards={hands[player]}
+              player={player}
+              status={statuses[player]}
+            />
+          ))}
+        </Player>
+      </Wrapper>
     )
   }
 }
 
 Table.propTypes = {
-  createNewDeck: T.func.isRequired,
-  dealCardTo: T.func.isRequired,
   deck: T.array.isRequired,
-  hands: T.object.isRequired
+  hands: T.object.isRequired,
+  statuses: T.object.isRequired,
 }
 
 export default withContainer(Table)
